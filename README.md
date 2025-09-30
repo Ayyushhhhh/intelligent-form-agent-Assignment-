@@ -2,7 +2,7 @@
 
 ![Banner](img/p.png) 
 
-## 📌 Project Overview
+##  Project Overview
 **FormMind AI** is an **Intelligent Form Agent** that can read, extract, and understand diverse forms (PDFs). It automates manual document review by:  
 
 - Extracting both structured + unstructured fields.  
@@ -15,7 +15,7 @@ This project extends beyond the base requirements with **novel features** like a
 
 ---
 
-## ⚙️ Technical Stack
+##  Technical Stack
 - **Backend:** FastAPI (Python), Uvicorn ASGI server  
 - **Frontend:** Vue.js 3 + Bootstrap 5 (static, bundled in `src/static/`)  
 - **NLP / ML:** HuggingFace Transformers, spaCy, scikit-learn  
@@ -24,7 +24,7 @@ This project extends beyond the base requirements with **novel features** like a
 
 ---
 
-## 📚 API Documentation (Swagger-style)
+##  API Documentation (Swagger-style)
 
 ### **1. Upload & Process Single Form**
 **Endpoint:** `POST /process`  
@@ -73,7 +73,7 @@ Runs 3 showcase examples in sequence:
 
 ---
 
-## 🎨 Frontend Documentation
+##  Frontend Documentation
 
 ### Technologies
 - Vue.js 3 – Reactive UI  
@@ -88,7 +88,7 @@ Runs 3 showcase examples in sequence:
 
 ---
 
-## 🔍 Example Demo Runs
+##  Example Demo Runs
 
 ### 📝 Single Form Q&A  
 Question: What is the total federal income tax withheld?  
@@ -152,11 +152,7 @@ uvicorn src.main:app --host 0.0.0.0 --port 10000
 ---
 
 ## 📸 Screenshots
-(Add screenshots under docs/ and reference them here)  
-
-- Upload Single Form UI  
-- Multi-Form Analysis UI  
-- Demo Output Section  
+![Alt](img/r.png)
 
 ---
 
