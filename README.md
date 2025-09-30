@@ -147,7 +147,31 @@ uvicorn src.main:app --host 0.0.0.0 --port 10000
 **Environment Variables:** (none required for local use)
 
 **Deployed URL (example):**  
-👉 [https://formmind-ai.onrender.com](https://formmind-ai.onrender.com)
+[https://formmind-ai.onrender.com](https://formmind-ai.onrender.com/)
+
+This project can be deployed using the provided `render.yaml` configuration file.  
+**Note:** Deployment was not done here due to insufficient space in the free-tier Render architecture.
+
+### Steps to Deploy on Render
+1. Create an account on Render.com and log in.  
+2. Create a new Web Service and connect your GitHub repository.  
+3. Use the provided `render.yaml` file for one-click deployment setup or configure manually:
+   - Set the Build Command to `pip install -r requirements.txt`  
+   - Set the Start Command to `uvicorn src.main:app --host 0.0.0.0 --port 10000`  
+   - No environment variables are needed for local use.  
+4. Deploy and monitor the logs for a successful start.  
+5. Access your app at the provided Render URL.
+
+---
+
+## 🎥 Video Demo
+Below is a demo video showcasing the project features and usage:
+
+[Insert your demo video link here]
+
+Example:  
+[![Demo Video](https://img.youtube.com/vi/YOUR_VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
+
 
 ---
 
