@@ -159,11 +159,11 @@ uvicorn src.main:app --host 0.0.0.0 --port 10000
 ##  Highlights
 - ✅ Meets all assignment requirements: extraction, summarization, QA, multi-form analysis.  
 - ✅ Adds novel features:  
-  - Entity masking  
-  - Modern web dashboard UI  
-  - Statistics cards  
-  - One-click demo launcher  
-- ✅ Packaged for easy deployment on Render  
+- ✅ Entity masking  
+- ✅ Modern web dashboard UI  
+- ✅ Statistics cards  
+- ✅ One-click demo launcher  
+  
 
 ---
 
