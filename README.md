@@ -199,6 +199,8 @@ source venv/bin/activate # (Windows: venv\Scripts\activate)
 
 pip install -r requirements.txt
 
+python -m pip install --upgrade pip(Might need)
+
 uvicorn src.main:app --reload
 
 Visit: [http://127.0.0.1:8000](http://127.0.0.1:8000)
