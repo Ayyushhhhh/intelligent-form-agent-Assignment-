@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>FormMind AI — Intelligent Form Agent</title>
+
+  <!-- Bootstrap CSS + Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+
+  <style>
+    body {
+      background: radial-gradient(circle at top left, #0f172a, #071028);
+      color: #e6eef8;
+      min-height: 100vh;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      display:flex;flex-direction:column;
+    }
+    .hero { text-align:center; padding:2.5rem 1rem 1rem; }
+    .emoji { font-size:2.5rem; display:inline-block; margin-bottom:.3rem; }
+    .gradient-text { background: linear-gradient(90deg,#60a5fa,#a78bfa); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-weight:800; font-size:2rem; margin-left:.4rem;}
+    .glass-card { border:none; border-radius:1rem; background: rgba(255,255,255,0.03); backdrop-filter: blur(12px); box-shadow: 0 10px 30px rgba(0,0,0,0.45); transition:transform .25s; }
+    .glass-card:hover{ transform:translateY(-4px); box-shadow:0 18px 40px rgba(0,0,0,0.6); }
+    .form-control { background: rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:#fff; }
+    .form-control:focus { border-color:#60a5fa; box-shadow:0 0 10px #60a5fa; }
+    .btn-gradient { background:linear-gradient(90deg,#6366f1,#3b82f6); border:none; color:#fff; font-weight:600; border-radius:.6rem; padding:.7rem; }
+    .stat-card{ padding:1.25rem; border-radius:.9rem; min-height:120px; color:#fff; font-weight:700;}
+    pre, p { white-space: pre-wrap; color: #edf2f7;}
+    footer{ margin-top:auto; text-align:center; padding:1rem; color:#94a3b8;}
+  </style>
+</head>
+<body>
+  <div id="app" class="container py-4">
+    <div class="hero">
+      <span class="emoji">🤖</span><span class="gradient-text">FormMind AI</span>
+      <p class="mt-2 text-light">Upload forms, get automated extraction, summaries, and deep Q&A — locally, no API keys.</p>
+    </div>
+
+    <!-- Mode Tabs -->
+    <ul class="nav nav-pills justify-content-center mb-4" id="modeTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#singleForm">Single Form</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#multiForm">Multi-Form</button>
+      </li>
+    </ul>
+
+    <!-- Stat cards -->
+    <div class="row g-3 mb-4 justify-content-center">
+      <div class="col-md-3">
+        <div class="glass-card stat-card" style="background:linear-gradient(135deg,#1e3a8a,#3b82f6);">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-clock-history fs-2 me-3"></i>
+            <div>
+              <div class="h4 mb-0">{{ stats.processing_time_ms ?? '-' }}</div>
+              <small class="text-muted">Processing (ms)</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="glass-card stat-card" style="background:linear-gradient(135deg,#059669,#10b981);">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-journal-text fs-2 me-3"></i>
+            <div>
+              <div class="h4 mb-0">{{ stats.doc_count ?? '-' }}</div>
+              <small class="text-muted">Indexed Docs</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="glass-card stat-card" style="background:linear-gradient(135deg,#f97316,#fb923c);">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-person-lines-fill fs-2 me-3"></i>
+            <div>
+              <div class="h4 mb-0">{{ stats.entity_count ?? '-' }}</div>
+              <small class="text-muted">Entities Masked</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs content -->
+    <div class="tab-content">
+      <!-- Single Form -->
+      <div class="tab-pane fade show active" id="singleForm">
+        <div class="glass-card p-4 mb-4">
+          <h5 class="mb-3"><i class="bi bi-upload me-2"></i>Upload Single Form</h5>
+          <div class="mb-3">
+            <input type="file" accept=".pdf" @change="onFileChange" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <input class="form-control" type="text" v-model="question" placeholder="Ask a question (optional)" />
+          </div>
+          <button class="btn btn-gradient w-100" @click="processForm" :disabled="loading">
+            <span v-if="loading" class="spinner-border spinner-border-sm me-2"></span>
+            {{ loading ? "Processing..." : "Process Form" }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Multi-Form -->
+      <div class="tab-pane fade" id="multiForm">
+        <div class="glass-card p-4 mb-4">
+          <h5 class="mb-3"><i class="bi bi-upload me-2"></i>Upload Multiple Forms</h5>
+          <div class="mb-3">
+            <input type="file" accept=".pdf" multiple @change="onFilesChange" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <input class="form-control" type="text" v-model="multiQuestion" placeholder="Ask a question across docs (optional)" />
+          </div>
+          <button class="btn btn-gradient w-100" @click="processMultiForm" :disabled="loading">
+            <span v-if="loading" class="spinner-border spinner-border-sm me-2"></span>
+            {{ loading ? "Processing..." : "Analyze Forms" }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Demo Launcher -->
+    <div class="glass-card p-4 mb-4 text-center">
+      <h5 class="mb-3"><i class="bi bi-play-circle me-2"></i>Run Prebuilt Demo Examples</h5>
+      <p class="text-muted small">Includes: Single-Form Q&A • Entity Masking • Multi-Form Analysis</p>
+      <button class="btn btn-gradient w-100" @click="runDemo" :disabled="loadingDemo">
+        <span v-if="loadingDemo" class="spinner-border spinner-border-sm me-2"></span>
+        {{ loadingDemo ? "Running Demo..." : "Run Demo Suite" }}
+      </button>
+    </div>
+
+    <!-- Results -->
+    <div v-if="result">
+      <div class="glass-card p-4 mb-4">
+        <h6 class="mb-2"><i class="bi bi-file-earmark-text me-2"></i>Extracted Text (masked)</h6>
+        <pre>{{ result.text }}</pre>
+      </div>
+
+      <div class="glass-card p-4 mb-4">
+        <h6 class="mb-2"><i class="bi bi-stickies me-2"></i>Summary</h6>
+        <p>{{ result.summary }}</p>
+        <div class="mt-2">
+          <button class="btn btn-light btn-sm me-2" @click="downloadSummary">Download Summary</button>
+          <button class="btn btn-outline-light btn-sm" @click="copySummary">Copy Summary</button>
+        </div>
+      </div>
+
+      <div v-if="result.answer" class="glass-card p-4 mb-4">
+        <h6 class="mb-2"><i class="bi bi-lightbulb me-2"></i>Answer to Your Question</h6>
+        <p>{{ result.answer }}</p>
+      </div>
+    </div>
+
+    <!-- Demo Output -->
+    <div v-if="demoOutput" class="glass-card p-4 mb-4">
+      <h6 class="mb-2"><i class="bi bi-terminal me-2"></i>Demo Output</h6>
+      <pre>{{ demoOutput }}</pre>
+    </div>
+
+    <footer>Powered by FormMind AI — Built with ❤️ by Ayush</footer>
+  </div>
+
+<script>
+const { createApp } = Vue;
+
+createApp({
+  data() {
+    return {
+      file: null,
+      files: [],
+      question: "",
+      multiQuestion: "",
+      result: null,
+      loading: false,
+      stats: {},
+      backendUrl: "/process",
+      backendUrlMulti: "/process_multi",
+      demoOutput: null,
+      loadingDemo: false
+    };
+  },
+  methods: {
+    onFileChange(e) { this.file = e.target.files[0]; },
+    onFilesChange(e) { this.files = Array.from(e.target.files); },
+    async processForm() {
+      if (!this.file) return alert("Please upload a PDF file.");
+      this.loading = true; this.result = null; this.stats = {};
+      const fd = new FormData();
+      fd.append("file", this.file);
+      fd.append("question", this.question || "");
+      const t0 = performance.now();
+      try {
+        const res = await fetch(this.backendUrl, { method: "POST", body: fd });
+        if (!res.ok) throw new Error(await res.text());
+        const payload = await res.json();
+        this.result = payload;
+        if (payload.stats) this.stats = payload.stats;
+      } catch (err) { alert("Error: " + err.message); }
+      finally {
+        const t1 = performance.now();
+        if (!this.stats.processing_time_ms) this.stats.processing_time_ms = Math.round(t1 - t0);
+        this.loading = false;
+      }
+    },
+    async processMultiForm() {
+      if (!this.files.length) return alert("Please upload at least one PDF file.");
+      this.loading = true; this.result = null; this.stats = {};
+      const fd = new FormData();
+      this.files.forEach(f => fd.append("files", f));
+      fd.append("question", this.multiQuestion || "");
+      const t0 = performance.now();
+      try {
+        const res = await fetch(this.backendUrlMulti, { method: "POST", body: fd });
+        if (!res.ok) throw new Error(await res.text());
+        const payload = await res.json();
+        this.result = payload;
+        if (payload.stats) this.stats = payload.stats;
+      } catch (err) { alert("Error: " + err.message); }
+      finally {
+        const t1 = performance.now();
+        if (!this.stats.processing_time_ms) this.stats.processing_time_ms = Math.round(t1 - t0);
+        this.loading = false;
+      }
+    },
+    async runDemo() {
+      this.loadingDemo = true;
+      this.demoOutput = null;
+      try {
+        const res = await fetch("/run_demo", { method: "POST" });
+        if (!res.ok) throw new Error(await res.text());
+        const payload = await res.json();
+        this.demoOutput = payload.demo_output;
+      } catch (err) {
+        alert("Demo failed: " + err.message);
+      } finally {
+        this.loadingDemo = false;
+      }
+    },
+    downloadSummary() {
+      if (!this.result || !this.result.summary) return;
+      const blob = new Blob([this.result.summary], {type:"text/plain"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a"); a.href = url; a.download = "summary.txt"; a.click();
+      URL.revokeObjectURL(url);
+    },
+    copySummary() {
+      if (!this.result || !this.result.summary) return;
+      navigator.clipboard.writeText(this.result.summary).then(()=> alert("Summary copied to clipboard"));
+    }
+  }
+}).mount("#app");
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
