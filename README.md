@@ -167,8 +167,7 @@ This project can be deployed using the provided `render.yaml` configuration file
 ## 🎥 Video Demo
 Below is a demo video showcasing the project features and usage:
 
-
-[![Demo Video]([https://img.youtube.com/vi/YOUR_VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID](https://drive.google.com/file/d/1BhpFu_SMtl3KvyDfdu3YnIDNS97vD8fS/view?usp=drive_link))
+[https://drive.google.com/file/d/1BhpFu_SMtl3KvyDfdu3YnIDNS97vD8fS/view?usp=drive_link]
 
 
 ---
