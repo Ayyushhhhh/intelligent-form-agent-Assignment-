@@ -90,11 +90,11 @@ Runs 3 showcase examples in sequence:
 
 ##  Example Demo Runs
 
-### 📝 Single Form Q&A  
+###  Single Form Q&A  
 Question: What is the total federal income tax withheld?  
 ✅ Answer: $12,450.75  
 
-### 🛡️ Entity Masking  
+###  Entity Masking  
 Original:  
 Employee: Jane Doe
 Phone: 9876543210
@@ -108,7 +108,7 @@ Email: [EMAIL]
 
 ✅ Entities Masked: 3  
 
-### 📊 Multi-Form Analysis  
+### Multi-Form Analysis  
 Question: Compare wages and tax withheld across 3 years.  
 
 ✅ Answer:  
@@ -120,7 +120,7 @@ Question: Compare wages and tax withheld across 3 years.
 
 ---
 
-## 🏗️ Architecture
+##  Architecture
 flowchart TD
 A[PDF Form] --> B[Parser: extract_text]
 B --> C[Anonymizer: mask PII]
@@ -132,7 +132,7 @@ F --> G[Results: text + summary + QA + stats]
 
 ---
 
-## 🚀 Deployment (Render)
+##  Deployment (Render)
 
 This project is deployment-ready on Render.
 
@@ -156,7 +156,7 @@ uvicorn src.main:app --host 0.0.0.0 --port 10000
 
 ---
 
-## ✨ Highlights
+##  Highlights
 - ✅ Meets all assignment requirements: extraction, summarization, QA, multi-form analysis.  
 - ✅ Adds novel features:  
   - Entity masking  
@@ -167,19 +167,24 @@ uvicorn src.main:app --host 0.0.0.0 --port 10000
 
 ---
 
-## 🔧 Setup & Run Locally
+##  Setup & Run Locally
 git clone https://github.com/Ayyushhhhh/intelligent-form-agent-Assignment-.git
+
 cd intelligent-form-agent
+
 python -m venv venv
+
 source venv/bin/activate # (Windows: venv\Scripts\activate)
+
 pip install -r requirements.txt
+
 uvicorn src.main:app --reload
 
 Visit: [http://127.0.0.1:8000](http://127.0.0.1:8000)
 
 ---
 
-## 📑 Final Notes
+##  Final Notes
 This project is a full-stack implementation of an Intelligent Form Agent.  
 It demonstrates form parsing, anonymization, summarization, retrieval-based QA, and UI integration in a deployment-ready package.
 
