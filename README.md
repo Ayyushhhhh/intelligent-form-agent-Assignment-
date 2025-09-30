@@ -1,6 +1,6 @@
 # 🤖 FormMind AI – Intelligent Form Agent  
 
-![Banner](docs/banner.png) <!-- optional banner image -->
+![Banner](img/p.png) 
 
 ## 📌 Project Overview
 **FormMind AI** is an **Intelligent Form Agent** that can read, extract, and understand diverse forms (PDFs). It automates manual document review by:  
